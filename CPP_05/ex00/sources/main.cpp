@@ -13,9 +13,9 @@ int	main(void)
 		employee01.incrementGrade();
 		std::cout << employee01 << std::endl;
 	}
-	catch (const std::exception& e)
+	catch (const std::exception& exeption)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cerr << exeption.what() << std::endl;
 	}
 	try
 	{
