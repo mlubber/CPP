@@ -53,11 +53,19 @@ std::string tmToString(const std::tm& tm, const char* format = "%Y-%m-%d")
 
 time_t	makeTime(std::string date)
 {
+	if (date.length() != 10)
+		return (-1);
+	
 	std::tm tm = {};
 	std::istringstream iss(date);
+
 	iss >> std::get_time(&tm, "%Y-%m-%d");
 	if (iss.fail())
 		return (-1);
+	
+	int parsed_year = tm.tm_year;
+	int parsed_month = tm.tm_mon;
+	int parsed_day = tm.tm_mday;
 	
 	tm.tm_hour = 0;
 	tm.tm_min = 0;
@@ -65,6 +73,11 @@ time_t	makeTime(std::string date)
 	tm.tm_isdst = -1;
 	time_t time = std::mktime(&tm);
 	if (time == -1)
+		return (-1);
+
+	if (tm.tm_year != parsed_year ||
+		tm.tm_mon != parsed_month ||
+		tm.tm_mday != parsed_day)
 		return (-1);
 
 	return (time);

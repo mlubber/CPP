@@ -4,15 +4,11 @@
 #include <sstream>
 #include <vector>
 #include <deque>
-#include <list>
 #include <iomanip>
 #include <algorithm>
-#include <sys/time.h>
-#include <utility>
-#include <cmath>
+#include <chrono>
 #include <set>
 #include <unordered_map>
-#include <limits.h>
 
 void				printList(std::vector<int>& list, size_t size);
 std::string			setFixedPrecision(int prec, double num);
@@ -48,14 +44,14 @@ void	parseInput(int argc, char **argv, Container& list)
 template <typename Func>
 double	funcTime(Func func)
 {
-	double result;
-	struct timeval start;
-	struct timeval end;
-	gettimeofday(&start, NULL);
+	std::chrono::microseconds duration;
+	std::chrono::_V2::system_clock::time_point start;
+	std::chrono::_V2::system_clock::time_point end;
+	start = std::chrono::high_resolution_clock::now();
 	func();
-	gettimeofday(&end, NULL);
-	result = (end.tv_sec - start.tv_sec) + ((end.tv_usec - start.tv_usec) / 1e6);
-	return (result);
+	end = std::chrono::high_resolution_clock::now();
+	duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+	return (duration.count() / 1e6);
 }
 
 template <typename Container>
